@@ -1,0 +1,47 @@
+spring:
+    application:
+        name: zone-gateway
+    thymeleaf:
+        mode: LEGACYHTML5
+        cache: false
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss
+        time-zone: GMT+8
+        default-property-inclusion: non_null
+server:
+    port: 8765 #Æô¶¯¶Ë¿Ú
+#
+zuul:
+  routes:
+    user:
+      path: /user/**
+      serviceId: zone-user
+
+ribbon:
+  eureka:
+    enabled: true
+
+eureka:
+    instance:
+        statusPageUrlPath: /info
+        healthCheckUrlPath: /health
+    client:
+        serviceUrl:
+            defaultZone: http://192.168.17.133:8761/eureka/
+security:
+  user:
+    name: leafw
+    password: leafw
+    role: user
+
+gate:
+  ignore:
+    startWith: /static
+    contain: .
+  oauth:
+    prefix: /api
+
+  jwt:
+    secret: Xe*g@1jda
+    expiration: 7200
+    header: access-token

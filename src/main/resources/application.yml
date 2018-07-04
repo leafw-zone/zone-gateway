@@ -21,20 +21,20 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
-  security:
-      user:
-          name: admin
-          password: admin
-          role: USER
+#  security:
+#      user:
+#          name: admin
+#          password: admin
+#          role: USER
+#
+#  gate:
+#    ignore:
+#      startWith: /static
+#      contain: .
+#    oauth:
+#      prefix: /api
 
-  gate:
-    ignore:
-      startWith: /static
-      contain: .
-    oauth:
-      prefix: /api
-
-    jwt:
-      secret: Xe*g@1jda
-      expiration: 7200
-      header: access-token
+#    jwt:
+#      secret: Xe*g@1jda
+#      expiration: 7200
+#      header: access-token

@@ -37,17 +37,17 @@ public class SessionAccessFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
         log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
         Object accessToken = request.getParameter("token");
-        if(accessToken == null) {
-            log.warn("token is empty");
-            context.setSendZuulResponse(false);
-            context.setResponseStatusCode(401);
-            try {
-                context.getResponse().getWriter().write("token is empty");
-            }catch (Exception e){
-                log.error("filter exception: {}",e);
-            }
-            return null;
-        }
+//        if(accessToken == null) {
+//            log.warn("token is empty");
+//            context.setSendZuulResponse(false);
+//            context.setResponseStatusCode(401);
+//            try {
+//                context.getResponse().getWriter().write("token is empty");
+//            }catch (Exception e){
+//                log.error("filter exception: {}",e);
+//            }
+//            return null;
+//        }
         log.info("ok");
         return null;
     }

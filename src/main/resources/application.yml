@@ -11,6 +11,11 @@ zuul:
     back:
       path: /user/**
       serviceId: zone-user
+
+    blog:
+      path: /blog/**
+      serviceId: zone-blog
+
 server:
   port: 8765
 eureka:

@@ -16,6 +16,10 @@ zuul:
       path: /blog/**
       serviceId: zone-blog
 
+    dms:
+      path: /dms/**
+      serviceId: zone-dms
+
 server:
   port: 8765
 eureka:

@@ -4,8 +4,10 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -28,6 +30,13 @@ public class SessionAccessFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
+//        RequestContext context = RequestContext.getCurrentContext();
+//        HttpServletRequest request = context.getRequest();
+//        System.out.println(request.getRequestURL());
+//        if(request.getRequestURL().toString().contains("/user/login") ||
+//                request.getRequestURL().toString().contains("/user/logout")){
+//            return false;
+//        }
         return true;
     }
 
@@ -37,7 +46,14 @@ public class SessionAccessFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
         log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
         Object accessToken = request.getParameter("token");
-//        if(accessToken == null) {
+        String token = request.getHeader("token");
+        Cookie[] cookies = request.getCookies();
+        if(null != cookies){
+            for (Cookie s : cookies) {
+                System.out.println(s);
+            }
+        }
+//        if(StringUtils.isEmpty(token) && null == accessToken) {
 //            log.warn("token is empty");
 //            context.setSendZuulResponse(false);
 //            context.setResponseStatusCode(401);

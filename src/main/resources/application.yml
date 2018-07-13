@@ -19,6 +19,8 @@ zuul:
     dms:
       path: /dms/**
       serviceId: zone-dms
+  #ignored-patterns: /user/login
+
 
 server:
   port: 8765

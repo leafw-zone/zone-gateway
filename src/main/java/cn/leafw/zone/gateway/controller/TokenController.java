@@ -1,9 +1,9 @@
 package cn.leafw.zone.gateway.controller;
 
 import cn.leafw.zone.common.dto.ResponseDto;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import cn.leafw.zone.gateway.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author CareyWYR
@@ -14,8 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/token")
 public class TokenController {
 
+    @Autowired
+    private TokenService tokenService;
+
     @RequestMapping(value = "/getToken",method = RequestMethod.GET)
     public ResponseDto getToken(){
-        return ResponseDto.instance("tokenStr");
+        String token = tokenService.generateToken();
+        return ResponseDto.instance(token);
+    }
+
+    @RequestMapping(value = "/invalidToken",method = RequestMethod.GET)
+    public ResponseDto invalidToken(@RequestParam(value = "token") String token){
+        tokenService.invalidToken(token);
+        return ResponseDto.instance(token);
     }
 }

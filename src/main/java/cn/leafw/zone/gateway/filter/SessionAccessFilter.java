@@ -4,6 +4,7 @@ import cn.leafw.zone.common.dto.ResponseDto;
 import cn.leafw.zone.gateway.rpc.IUserService;
 import cn.leafw.zone.gateway.service.TokenService;
 import cn.leafw.zone.gateway.utils.IOUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -42,12 +43,6 @@ public class SessionAccessFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        RequestContext context = RequestContext.getCurrentContext();
-        HttpServletRequest request = context.getRequest();
-        System.out.println(request.getRequestURL());
-        if(request.getRequestURL().toString().contains("/user/login") ){
-            return false;
-        }
         return true;
     }
 
@@ -57,17 +52,18 @@ public class SessionAccessFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
         log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
         if(request.getRequestURL().toString().contains("/user/login")){
+            String userName = "";
+            String password = "";
             try {
                 BufferedReader bufferedReader = request.getReader();
                 String bodyStr = IOUtils.read(bufferedReader);
+                JSONObject jsonObject = JSONObject.parseObject(bodyStr);
+                userName = String.valueOf(jsonObject.get("userName"));
+                password = String.valueOf(jsonObject.get("password"));
                 log.info("body: {}", bodyStr);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            String userDto = request.getParameter("userDto");
-            String userName = request.getParameter("userName");
-            String password = request.getParameter("password");
             ResponseDto responseDto = iUserService.checkUserLogin(userName, password);
             if(null == responseDto.getData()){
                 context.setSendZuulResponse(false);
@@ -116,8 +112,7 @@ public class SessionAccessFilter extends ZuulFilter {
                 }
             }
         }
-
-        log.info("ok");
+        log.info("{} >>> ok", request.getRequestURL().toString());
         return null;
     }
 }
